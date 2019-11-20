@@ -9,9 +9,11 @@
 
 (= 20 (:b {:a 10 :b 20 :c 30}))
 
+
 ;; #11 Maps: conj
 (= {:a 1 :b 2 :c 3} (conj {:a 1} [:b 2] {:c 3}))
 (= {:a 1 :b 2 :c 3 :d 4 :e 5 :f 6 :g 7} (conj {:a 1}  [:b 2] [:c 3] [:d 4] [:e 5] [:f 6] [:g 7]))
+
 
 ;; #12 Intro to Sequences
 (= 3 (first '(3 2 1)))
@@ -22,14 +24,15 @@
 (= [20 30 40] (rest [10 20 30 40]))
 
 
+
 ;; #14 Intro to Functions
 (= 8 ((fn add-five [x] (+ x 5)) 3))
-(= 8 ((fn [x] (+ x 5)) 
+(= 8 ((fn [x] (+ x 5)) 3)) 
 (= 8 ((partial + 5) 3))
 
 
 ;; #15 Double Down
-(= ((fn double-num [x] (* x 2)) 
+(= ((fn double-num [x] (* x 2)) 3) 6) 
 (= ((fn [x] (* x 2) 3) 6))
 (= (#(* % 2) 11) 22)
 (= ((partial * 2) 7) 14)
@@ -40,7 +43,7 @@
   [n]
   (str "Hello, " n "!"))
 
-
+    
 ;; #17 Sequences: map
 (= '(6 7 8) (map #(+ % 5) '(1 2 3)) )
 
@@ -77,12 +80,10 @@
 ;; A recursive function is a function which calls itself.
 ;; This is one of the fundamental techniques used in functional programming.
 (comment
-  
   (defn foo
     [x]
     (when (> x 0)
       (conj (foo (dec x)) x)))
-
 
   (foo 5))
 
@@ -91,7 +92,6 @@
 
 
 ;; #71 Rearranging Code: ->
- 
 (= (last (sort (rest (reverse [2 5 4 1 3 6]))))
    (-> [2 5 4 1 3 6]
        (reverse)
@@ -194,14 +194,19 @@
 (clojure.set/superset? #{1 2} #{1 2})
 (clojure.set/subset? #{1 2} #{1 2})
 
-# 156
-# Map Defaults
-# When retrieving values from a map, you can specify default values in case the key is not found:
-#
-# (= 2 (:foo {:bar 0, :baz 1} 2))
-#
-# However, what if you want the map itself to contain the default values? Write
-    # a function which takes a default value and a sequence of keys and constructs a map.
+;; # 156
+;; # Map Defaults
+;; # When retrieving values from a map, you can specify default values in case the
+;; key is not found:
+;; #
+;; # (= 2 (:foo {:bar 0, :baz 1} 2))
+;; #
+;; # However, what if you want the map itself to contain the default values? Write
+;; # a function which takes a default value and a sequence of keys and constructs a map.
 (defn f156
- [d ks]
- ())
+  [dv kys]
+  (loop [ks kys
+         mp {}]
+    (if (empty? ks)
+      mp
+      (recur (rest ks) (assoc mp (first ks) dv)))))
